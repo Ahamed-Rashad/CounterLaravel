@@ -1,40 +1,50 @@
+<!-- resources/views/livewire/booking.blade.php -->
+
 <div>
     @if(isset($selectedOptions))
-        @foreach($selectedOptions as $index => $options)
-            <form wire:submit.prevent="submitForm" wire:key="form{{ $index }}">
-                <p>Departure</p>
-                @foreach(['timing option 1', 'timing option 2', 'timing option 3'] as $option)
-                    <input
-                        type="radio"
-                        wire:model="selectedOptions.{{ $index }}.departure"
-                        wire:change="updateSelectedOptions({{ $index }})"
-                        name="departure{{ $index }}"
-                        value="{{ $option }}"
-                        {{ $loop->first ? 'checked' : '' }}
-                    > <label>{{ $option }}</label><br>
-                @endforeach
+        <form wire:submit.prevent="submitForm">
+            @foreach($selectedOptions as $index => $options)
+                <div wire:key="card{{ $index }}">
+                    <p>Card {{ $index + 1 }}</p>
 
-                <p>Return</p>
-                @foreach(['timing option 1', 'timing option 2', 'timing option 3'] as $option)
-                    <input
-                        type="radio"
-                        wire:model="selectedOptions.{{ $index }}.return"
-                        wire:change="updateSelectedOptions({{ $index }})"
-                        name="return{{ $index }}"
-                        value="{{ $option }}"
-                        {{ $loop->first ? 'checked' : '' }}
-                    > <label>{{ $option }}</label><br>
-                @endforeach
+                    <p>Departure</p>
+                    @foreach(['timing option 1', 'timing option 2', 'timing option 3'] as $option)
+                        <input
+                            type="radio"
+                            wire:model="selectedOptions.{{ $index }}.departure"
+                            wire:change="updateSelectedOptions({{ $index }}, 'departure', '{{ $option }}')"
+                            name="departure{{ $index }}"
+                            value="{{ $option }}"
+                            {{ $loop->first && $index === 0 ? 'checked' : '' }}
+                        > <label>{{ $option }}</label><br>
+                    @endforeach
 
-                <button type="submit" wire:target="submitForm">Submit</button>
+                    <p>Return</p>
+                    @foreach(['timing option 1', 'timing option 2', 'timing option 3'] as $option)
+                        <input
+                            type="radio"
+                            wire:model="selectedOptions.{{ $index }}.return"
+                            wire:change="updateSelectedOptions({{ $index }}, 'return', '{{ $option }}')"
+                            name="return{{ $index }}"
+                            value="{{ $option }}"
+                            {{ $loop->first && $index === 0 ? 'checked' : '' }}
+                        > <label>{{ $option }}</label><br>
+                    @endforeach
 
-                <div>
-                    <h3>Selected Options - Card {{ $index + 1 }}</h3>
-                    <p>Departure: {{ $options['departure'] ?? '' }}</p>
-                    <p>Return: {{ $options['return'] ?? '' }}</p>
+                    <hr>
                 </div>
-            </form>
-        @endforeach
+            @endforeach
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div>
+            <p>
+                Selected Options - Card {{ $selectedCard }}:
+                Departure: {{ $selectedOptions[$selectedCard - 1]['departure'] }}
+                Return: {{ $selectedOptions[$selectedCard - 1]['return'] }}
+            </p>
+        </div>
     @endif
 
     @if (session()->has('message'))

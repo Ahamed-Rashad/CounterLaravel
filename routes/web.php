@@ -3,6 +3,7 @@
 use App\Livewire\Booking;
 use App\Livewire\Counter;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SoapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,5 @@ Route::get('/', function () {
 Route::get('/counter', Counter::class);
 
 Route::get('/booking', Booking::class);
+
+Route::get('/getLowFareSearch', [SoapController::class, 'getLowFareSearch']);
